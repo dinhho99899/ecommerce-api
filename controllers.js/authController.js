@@ -2,7 +2,11 @@ const User = require('../models/User')
 const { StatusCodes } = require('http-status-codes')
 const CustomError = require('../errors')
 const jwt = require('jsonwebtoken')
-const { attachCookiesToResponse, createTokenUser } = require('../ultil')
+const {
+  attachCookiesToResponse,
+  createTokenUser,
+  createJWT,
+} = require('../ultil')
 const register = async (req, res) => {
   const { email, name, password } = req.body
   if (!email || !password || !name) {
@@ -16,8 +20,9 @@ const register = async (req, res) => {
   const role = firstAccount ? 'admin' : 'user'
   const user = await User.create({ name, email, password, role })
   const tokenUser = createTokenUser(user)
+  const tk = createJWT({ payload: tokenUser })
   attachCookiesToResponse({ res, user: tokenUser })
-  res.status(StatusCodes.CREATED).json({ user: tokenUser })
+  res.status(StatusCodes.CREATED).json({ user: { ...tokenUser, token: tk } })
 }
 const login = async (req, res) => {
   const { email, password } = req.body
@@ -38,8 +43,9 @@ const login = async (req, res) => {
     userId: user._id,
     role: user.role,
   }
+  const tk = createJWT({ payload: tokenUser })
   attachCookiesToResponse({ res, user: tokenUser })
-  res.status(StatusCodes.CREATED).json({ user: tokenUser })
+  res.status(StatusCodes.CREATED).json({ user: { ...tokenUser, token: tk } })
 }
 const logout = async (req, res) => {
   res.cookie('token', 'logout', {
