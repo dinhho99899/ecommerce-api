@@ -1,45 +1,43 @@
-const CustomError = require('../errors');
-const { isTokenValid } = require('../utils/jwt');
+const CustomError = require('../errors')
+const { isTokenValid } = require('../ultil')
 
-const authenticateUser = async (req, res, next) => {
-  let token;
+const fullAuthenticateUser = async (req, res, next) => {
+  let token
   // check header
-  const authHeader = req.headers.authorization;
+  const authHeader = req.headers.authorization
   if (authHeader && authHeader.startsWith('Bearer')) {
-    token = authHeader.split(' ')[1];
+    token = authHeader.split(' ')[1]
   }
+
   // check cookies
   else if (req.cookies.token) {
-    token = req.cookies.token;
+    token = req.cookies.token
   }
 
   if (!token) {
-    throw new CustomError.UnauthenticatedError('Authentication invalid');
+    throw new CustomError.UnauthenticatedError('Authentication invalid')
   }
+  console.log(token)
   try {
-    const payload = isTokenValid(token);
-
+    const { name, userId, role } = isTokenValid({ token })
+    console.log(payload)
     // Attach the user and his permissions to the req object
-    req.user = {
-      userId: payload.user.userId,
-      role: payload.user.role,
-    };
-
-    next();
+    req.user = { name, userId, role }
+    next()
   } catch (error) {
-    throw new CustomError.UnauthenticatedError('Authentication invalid');
+    throw new CustomError.UnauthenticatedError('Authentication invalid')
   }
-};
+}
 
 const authorizeRoles = (...roles) => {
   return (req, res, next) => {
     if (!roles.includes(req.user.role)) {
       throw new CustomError.UnauthorizedError(
         'Unauthorized to access this route'
-      );
+      )
     }
-    next();
-  };
-};
+    next()
+  }
+}
 
-module.exports = { authenticateUser, authorizeRoles };
+module.exports = { fullAuthenticateUser, authorizeRoles }

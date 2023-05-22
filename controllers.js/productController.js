@@ -11,6 +11,14 @@ const getAllProducts = async (req, res) => {
   const products = await Product.find({})
   res.status(StatusCodes.OK).json({ products, count: products.length })
 }
+const getAllProductsbyAdmin = async (req, res) => {
+  const products = await Product.find({ role: '645d75038a7c9b08e769f94a' })
+  res.status(StatusCodes.OK).json({ products, count: products.length })
+}
+const getSingleProductbyAdmin = async (req, res) => {
+  const product = await Product.findOne({ _id: req.params.id })
+  res.status(StatusCodes.OK).json({ product })
+}
 const getSingleProduct = async (req, res) => {
   const { id: productId } = req.params
   const product = await Product.findOne({ _id: productId }).populate('reviews')
@@ -64,4 +72,6 @@ module.exports = {
   updateProduct,
   deleteProduct,
   uploadImage,
+  getAllProductsbyAdmin,
+  getSingleProductbyAdmin,
 }

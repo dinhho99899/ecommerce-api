@@ -3,7 +3,9 @@ const router = express.Router()
 const {
   authenticateUser,
   authorizePermission,
+  authenticateUserbyToken,
 } = require('../middleware/authentication')
+const { fullAuthenticateUser } = require('../middleware/full-auth')
 const {
   getSingleProductReviews,
 } = require('../controllers.js/ReviewController')
@@ -18,7 +20,8 @@ const {
 router
   .route('/')
   .post([authenticateUser, authorizePermission('admin')], createProduct)
-  .get(authenticateUser, getAllProducts)
+  .get(authenticateUserbyToken, getAllProducts)
+
 router
   .route('/:id')
   .patch([authenticateUser, authorizePermission('admin')], updateProduct)

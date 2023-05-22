@@ -10,7 +10,6 @@ const {
   getSingleReview,
   updateReview,
   deleteReview,
-  getSingleProductReviews,
 } = require('../controllers.js/ReviewController')
 router.route('/').post(authenticateUser, createReview).get(getAllReviews)
 

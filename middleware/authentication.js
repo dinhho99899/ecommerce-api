@@ -8,6 +8,27 @@ const authenticateUser = (req, res, next) => {
   try {
     const { name, userId, role } = isTokenValid({ token })
     req.user = { name, userId, role }
+
+    next()
+  } catch (error) {
+    throw new CustomError.UnauthenticatedError('authentication invalid')
+  }
+}
+const authenticateUserbyToken = (req, res, next) => {
+  let token
+  // check header
+  const authHeader = req.headers.authorization
+  if (authHeader && authHeader.startsWith('Bearer')) {
+    token = authHeader.split(' ')[1]
+  }
+  if (!token) {
+    throw new CustomError.UnauthenticatedError('authentication invalid')
+  }
+  console.log(token)
+  try {
+    const { name, userId, role } = isTokenValid({ token })
+    req.user = { name, userId, role }
+
     next()
   } catch (error) {
     throw new CustomError.UnauthenticatedError('authentication invalid')
@@ -23,4 +44,8 @@ const authorizePermission = (...roles) => {
     next()
   }
 }
-module.exports = { authenticateUser, authorizePermission }
+module.exports = {
+  authenticateUser,
+  authorizePermission,
+  authenticateUserbyToken,
+}
