@@ -3,6 +3,7 @@ const router = express.Router()
 const {
   authenticateUser,
   authorizePermission,
+  authenticateUserbyToken,
 } = require('../middleware/authentication')
 const {
   createReview,
@@ -11,7 +12,7 @@ const {
   updateReview,
   deleteReview,
 } = require('../controllers.js/ReviewController')
-router.route('/').post(authenticateUser, createReview).get(getAllReviews)
+router.route('/').post(authenticateUserbyToken, createReview).get(getAllReviews)
 
 router
   .route('/:id')

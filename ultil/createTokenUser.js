@@ -4,6 +4,9 @@ const createTokenUser = (user) => {
     email: user.email,
     userId: user._id,
     role: user.role,
+    avatar: user.avatar,
+    lastname: user.lastname,
+    location: user.location,
   }
 }
 module.exports = createTokenUser

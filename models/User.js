@@ -8,6 +8,16 @@ const UserSchema = mongoose.Schema({
     minlength: 3,
     maxlength: 50,
   },
+  lastname: {
+    type: String,
+    minlength: 3,
+    maxlength: 50,
+  },
+  location: {
+    type: String,
+    minlength: 3,
+    maxlength: 50,
+  },
   email: {
     type: String,
     unique: true,
@@ -22,6 +32,11 @@ const UserSchema = mongoose.Schema({
     required: [true, 'Please provide name'],
     minlength: 3,
     maxlength: 50,
+  },
+  avatar: {
+    type: String,
+    default:
+      'https://res.cloudinary.com/dgfo67rxh/image/upload/v1684854394/ntvnuts/user_emf8sj.png',
   },
   role: { type: String, enum: ['admin', 'user'], default: 'user' },
 })

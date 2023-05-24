@@ -16,6 +16,7 @@ const {
   updateProduct,
   deleteProduct,
   uploadImage,
+  uploadImageCloud,
 } = require('../controllers.js/productController')
 router
   .route('/')
@@ -27,8 +28,6 @@ router
   .patch([authenticateUser, authorizePermission('admin')], updateProduct)
   .delete([authenticateUser, authorizePermission('admin')], deleteProduct)
   .get(getSingleProduct)
-router
-  .route('/uploadImage')
-  .post([authenticateUser, authorizePermission('admin')], uploadImage)
+router.route('/uploadImage').post(authenticateUserbyToken, uploadImageCloud)
 router.route('/:id/reviews').get(authenticateUser, getSingleProductReviews)
 module.exports = router

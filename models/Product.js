@@ -26,6 +26,21 @@ const ProductSchema = mongoose.Schema(
       required: [true, 'please provide product category'],
       enum: ['office', 'kitchen', 'bebroom'],
     },
+    info: {
+      type: {
+        name: {
+          type: String,
+          required: [true, 'please provide name'],
+          default: 'hello',
+        },
+        date: {
+          type: String,
+          required: [true, 'please provide name'],
+          default: 'hello',
+        },
+      },
+      required: [true, 'please provide product info'],
+    },
     company: {
       type: String,
       required: [true, 'please provide company'],

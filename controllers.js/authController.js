@@ -42,6 +42,7 @@ const login = async (req, res) => {
     email: user.email,
     userId: user._id,
     role: user.role,
+    avatar: user.avatar,
   }
   const tk = createJWT({ payload: tokenUser })
   attachCookiesToResponse({ res, user: tokenUser })
@@ -54,4 +55,5 @@ const logout = async (req, res) => {
   })
   res.status(StatusCodes.OK).json({ msg: 'user logged out' })
 }
+
 module.exports = { register, login, logout }

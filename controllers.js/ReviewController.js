@@ -32,7 +32,7 @@ const getAllReviews = async (req, res) => {
     })
     .populate({
       path: 'user',
-      select: 'name ',
+      select: 'name avatar',
     })
   res.status(StatusCodes.OK).json({ reviews })
 }

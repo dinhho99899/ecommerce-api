@@ -13,9 +13,10 @@ const SingleCartItemSchema = mongoose.Schema({
 const OrderSchema = mongoose.Schema(
   {
     tax: {
-      type: Number,
-      required: true,
+      type: String,
+      require: true,
     },
+    note: { type: String, default: 'Please ship faster' },
     shippingFee: {
       type: Number,
       required: true,

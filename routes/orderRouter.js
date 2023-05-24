@@ -3,6 +3,7 @@ const router = express.Router()
 const {
   authenticateUser,
   authorizePermission,
+  authenticateUserbyToken,
 } = require('../middleware/authentication')
 const {
   createOrder,
@@ -13,9 +14,11 @@ const {
 } = require('../controllers.js/orderController')
 router
   .route('/')
-  .post(authenticateUser, createOrder)
-  .get(authenticateUser, authorizePermission('admin'), getAllOrders)
-router.route('/getAllMyOrders').get(authenticateUser, getCurrentUserOrders)
+  .post(authenticateUserbyToken, createOrder)
+  .get(authenticateUserbyToken, getAllOrders)
+router
+  .route('/getAllMyOrders')
+  .get(authenticateUserbyToken, getCurrentUserOrders)
 router
   .route('/:id')
   .get(authenticateUser, getSingleOrder)
