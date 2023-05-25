@@ -16,7 +16,7 @@ const OrderSchema = mongoose.Schema(
       type: String,
       require: true,
     },
-    note: { type: String, default: 'Please ship faster' },
+
     shippingFee: {
       type: Number,
       required: true,
@@ -29,6 +29,23 @@ const OrderSchema = mongoose.Schema(
       type: Number,
       required: true,
     },
+    name: {
+      type: String,
+      require: [true, 'please provide name'],
+    },
+    email: {
+      type: String,
+      require: [true, 'please provide email'],
+    },
+    phone: {
+      type: Number,
+      require: [true, 'please provide phone number'],
+    },
+    address: {
+      type: String,
+      require: [true, 'please provide address'],
+    },
+    note: { type: String, default: 'Please ship faster' },
     orderItems: [SingleCartItemSchema],
     status: {
       type: String,

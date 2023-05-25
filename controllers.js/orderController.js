@@ -9,14 +9,21 @@ const fakeStripeAPI = async ({ amount, currency }) => {
   return { client_secret, amount }
 }
 const createOrder = async (req, res) => {
-  const { items: cartItems, tax, shippingFee } = req.body
+  const {
+    items: cartItems,
+    tax,
+    shippingFee,
+    name,
+    email,
+    address,
+    phone,
+    note,
+  } = req.body
   if (!cartItems || cartItems.length < 1) {
-    throw new CustomError.BadRequestError(' No cartitems provided')
+    throw new CustomError.BadRequestError(' No cart items provided')
   }
-  if (!tax || !shippingFee) {
-    throw new CustomError.BadRequestError(
-      ' Please provided tax or shipping fee'
-    )
+  if (!tax || !shippingFee || !name || !email || !address || !phone) {
+    throw new CustomError.BadRequestError(' Please provided all values')
   }
   let orderItems = []
   let subtotal = 0
@@ -44,6 +51,11 @@ const createOrder = async (req, res) => {
     shippingFee,
     total,
     subtotal,
+    name,
+    email,
+    phone,
+    address,
+    note,
     clientSecret: paymentItent.client_secret,
     user: req.user.userId,
   })
@@ -64,7 +76,7 @@ const createOrder = async (req, res) => {
   console.log(htMl)
   const mailOptions = {
     from: 'quahatkhontv@gmail.com',
-    to: 'dinhho99899@gmail.com, enemiesofenron@gmail.com',
+    to: `quahatkhontv@gmail.com, ${email}`,
     subject: 'Order complete! Thank you so much for choosing us',
     html: `
     <!doctype html><html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head><body><div><h1 style="font-size: 18px; font-weight: bold; margin-top: 20px">Thank you for your purchase!</h1><p>Your order is being processed and should arrive at your destination within 5 days. Thank you again your purchase. We would love to hear from you once you receive your items.
