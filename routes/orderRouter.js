@@ -4,6 +4,7 @@ const {
   authenticateUser,
   authorizePermission,
   authenticateUserbyToken,
+  x,
 } = require('../middleware/authentication')
 const {
   createOrder,
@@ -11,6 +12,7 @@ const {
   getCurrentUserOrders,
   getSingleOrder,
   updateOrder,
+  createOrderWithoutAuth,
 } = require('../controllers.js/orderController')
 router
   .route('/')
@@ -18,7 +20,8 @@ router
   .get(authenticateUserbyToken, getAllOrders)
 router
   .route('/getAllMyOrders')
-  .get(authenticateUserbyToken, getCurrentUserOrders)
+  .get(authenticateUserbyToken, getCurrentUserOrders),
+  router.route('/createOrderWithoutAuth').post(createOrderWithoutAuth)
 router
   .route('/:id')
   .get(authenticateUser, getSingleOrder)

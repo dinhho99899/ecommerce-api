@@ -20,7 +20,7 @@ const {
 } = require('../controllers.js/productController')
 router
   .route('/')
-  .post([authenticateUser, authorizePermission('admin')], createProduct)
+  .post(authenticateUserbyToken, createProduct)
   .get(authenticateUserbyToken, getAllProducts)
 
 router

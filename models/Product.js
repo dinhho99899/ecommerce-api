@@ -7,33 +7,33 @@ const ProductSchema = mongoose.Schema(
       trim: true,
       maxlength: [100, 'name cannot be more than 100 character'],
     },
-    price: {
-      type: Number,
-      required: [true, 'please provide price'],
-      default: 0,
+    category: {
+      type: String,
+      required: [true, 'please provide product category'],
+      enum: ['office', 'kitchen', 'bebroom'],
     },
     description: {
       type: String,
       required: [true, 'please provide desciption'],
       maxlength: [1000, 'name cannot be more than 1000 character'],
     },
+    price: {
+      type: Number,
+      required: [true, 'please provide price'],
+      default: 0,
+    },
     image: {
       type: String,
       default: '/uploads/example.jpeg',
     },
-    category: {
-      type: String,
-      required: [true, 'please provide product category'],
-      enum: ['office', 'kitchen', 'bebroom'],
-    },
     info: {
       type: {
-        name: {
+        title: {
           type: String,
           required: [true, 'please provide name'],
           default: 'hello',
         },
-        date: {
+        usesage: {
           type: String,
           required: [true, 'please provide name'],
           default: 'hello',
@@ -44,15 +44,11 @@ const ProductSchema = mongoose.Schema(
     company: {
       type: String,
       required: [true, 'please provide company'],
-      enum: {
-        values: ['ikea', 'liddy', 'marcos'],
-        message: '{VALUE} is not support',
-      },
+      default: 'ntv nuts',
     },
     colors: {
       type: [String],
       default: ['#222'],
-      required: true,
     },
     featured: {
       type: Boolean,
