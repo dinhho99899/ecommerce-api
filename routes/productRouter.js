@@ -26,7 +26,7 @@ router
 router
   .route('/:id')
   .patch([authenticateUser, authorizePermission('admin')], updateProduct)
-  .delete([authenticateUser, authorizePermission('admin')], deleteProduct)
+  .delete(authenticateUserbyToken, deleteProduct)
   .get(getSingleProduct)
 router.route('/uploadImage').post(authenticateUserbyToken, uploadImageCloud)
 router.route('/:id/reviews').get(authenticateUser, getSingleProductReviews)

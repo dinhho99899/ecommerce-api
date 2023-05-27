@@ -1,7 +1,9 @@
 const { StatusCodes } = require('http-status-codes')
 const CustomError = require('../errors')
+const moment = require('moment')
 const Order = require('../models/Order')
 const Product = require('../models/Product')
+const Review = require('../models/Review')
 const { checkPermission } = require('../ultil')
 const nodemailer = require('nodemailer')
 const fakeStripeAPI = async ({ amount, currency }) => {
@@ -102,6 +104,31 @@ const createOrder = async (req, res) => {
 const getAllOrders = async (req, res) => {
   const orders = await Order.find({})
   res.status(StatusCodes.OK).json({ orders, count: orders.length })
+}
+const getStats = async (req, res) => {
+  let orders = await Order.aggregate([
+    {
+      $group: {
+        _id: { year: { $year: '$createdAt' }, month: { $month: '$createdAt' } },
+        count: { $sum: 1 },
+      },
+    },
+  ])
+  orders = orders
+    .map((item) => {
+      const {
+        _id: { year, month },
+        count,
+      } = item
+      const date = moment()
+        .month(month - 1)
+        .year(year)
+        .format('MMM Y')
+      return { date, count }
+    })
+    .reverse()
+  console.log(orders)
+  res.status(StatusCodes.OK).json({ orders })
 }
 const getSingleOrder = async (req, res) => {
   const { id: orderId } = req.params
@@ -215,4 +242,5 @@ module.exports = {
   getSingleOrder,
   updateOrder,
   createOrderWithoutAuth,
+  getStats,
 }

@@ -13,6 +13,7 @@ const {
   getSingleOrder,
   updateOrder,
   createOrderWithoutAuth,
+  getStats,
 } = require('../controllers.js/orderController')
 router
   .route('/')
@@ -22,6 +23,7 @@ router
   .route('/getAllMyOrders')
   .get(authenticateUserbyToken, getCurrentUserOrders),
   router.route('/createOrderWithoutAuth').post(createOrderWithoutAuth)
+router.route('/getStats').get(authenticateUserbyToken, getStats)
 router
   .route('/:id')
   .get(authenticateUser, getSingleOrder)

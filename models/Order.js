@@ -38,7 +38,7 @@ const OrderSchema = mongoose.Schema(
       require: [true, 'please provide email'],
     },
     phone: {
-      type: Number,
+      type: String,
       require: [true, 'please provide phone number'],
     },
     address: {
