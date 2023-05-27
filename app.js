@@ -56,7 +56,6 @@ app.use(express.static('./public'))
 app.use(fileUpload({ useTempFiles: true }))
 
 app.get('/api/v1', (req, res) => {
-  console.log(req.signedCookies)
   res.send('ecommerce api')
 })
 

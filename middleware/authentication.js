@@ -24,7 +24,6 @@ const authenticateUserbyToken = (req, res, next) => {
   if (!token) {
     throw new CustomError.UnauthenticatedError('authentication invalid')
   }
-  console.log(token)
   try {
     const { name, userId, role } = isTokenValid({ token })
     req.user = { name, userId, role }

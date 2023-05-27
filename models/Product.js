@@ -8,9 +8,14 @@ const ProductSchema = mongoose.Schema(
       maxlength: [100, 'name cannot be more than 100 character'],
     },
     category: {
-      type: String,
+      type: [String],
       required: [true, 'please provide product category'],
-      enum: ['office', 'kitchen', 'bebroom'],
+      enum: [
+        'Hạt sống',
+        'Hạt sấy chín ăn liền',
+        'Hoa quả sấy khô',
+        'Mix hạt dinh dưỡng',
+      ],
     },
     description: {
       type: String,
@@ -33,7 +38,7 @@ const ProductSchema = mongoose.Schema(
           required: [true, 'please provide name'],
           default: 'hello',
         },
-        usesage: {
+        usermanual: {
           type: String,
           required: [true, 'please provide name'],
           default: 'hello',

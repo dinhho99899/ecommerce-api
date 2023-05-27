@@ -8,27 +8,32 @@ const {
   checkPermission,
 } = require('../ultil')
 const createReview = async (req, res) => {
-  const { id: productId } = req.body
-  const isValidProduct = Product.findOne({ _id: productId })
+  const { product: productId, rating } = req.body
+  const isValidProduct = await Product.findOne({ _id: productId })
   if (!isValidProduct) {
     throw new CustomError.NotFoundError(`No product with id ${productId}`)
   }
-  const alreadySubmited = await Review.findOne({
-    product: productId,
-    user: req.user.userId,
-  })
-  if (alreadySubmited) {
-    throw new CustomError.BadRequestError('Already Submit for this products')
-  }
   req.body.user = req.user.userId
   const review = await Review.create(req.body)
+  const reviews = await Review.find({ product: productId })
+  const total = reviews.reduce((total, current) => {
+    total += current.rating
+    return total
+  }, 0)
+  const averageRating = total / reviews.length
+
+  const product = await Product.findOneAndUpdate(
+    { _id: productId },
+    { averageRating },
+    { new: true, runValidators: true }
+  )
   res.status(StatusCodes.CREATED).json({ review })
 }
 const getAllReviews = async (req, res) => {
   const reviews = await Review.find({})
     .populate({
       path: 'product',
-      select: 'name company price',
+      select: 'name company price averageRating',
     })
     .populate({
       path: 'user',
@@ -76,7 +81,7 @@ const getSingleProductReviewsbyWithoutAuthor = async (req, res) => {
   const { id: productId } = req.params
   const reviews = await Review.find({ product: productId }).populate({
     path: 'user',
-    select: 'name ',
+    select: 'name avatar',
   })
   res.status(StatusCodes.OK).json({ reviews, count: reviews.length })
 }
