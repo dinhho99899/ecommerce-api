@@ -8,7 +8,7 @@ const ProductSchema = mongoose.Schema(
       maxlength: [100, 'name cannot be more than 100 character'],
     },
     category: {
-      type: [String],
+      type: String,
       required: [true, 'please provide product category'],
       enum: [
         'Hạt sống',
@@ -31,20 +31,9 @@ const ProductSchema = mongoose.Schema(
       type: String,
       default: '/uploads/example.jpeg',
     },
-    info: {
-      type: {
-        title: {
-          type: String,
-          required: [true, 'please provide name'],
-          default: 'hello',
-        },
-        usermanual: {
-          type: String,
-          required: [true, 'please provide name'],
-          default: 'hello',
-        },
-      },
-      required: [true, 'please provide product info'],
+    usermanual: {
+      type: String,
+      required: [true, 'please provide name'],
     },
     company: {
       type: String,
